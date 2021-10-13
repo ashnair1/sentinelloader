@@ -1,7 +1,6 @@
 import hashlib
 import logging
 import os
-import os.path
 import re
 import uuid
 from datetime import datetime, timedelta
@@ -170,7 +169,9 @@ class Sentinel2Loader:
                         selectedTiles.append(index)
                         footprints.append(footprint)
                 except:
-                    import pdb ;pdb.set_trace()
+                    import pdb
+
+                    pdb.set_trace()
 
         if missing.area > 0:
             raise Exception(
@@ -188,7 +189,8 @@ class Sentinel2Loader:
         tileFiles = []
         for index, sp in products_df.loc[selectedTiles].iterrows():
             url = (
-                self.apiUrl + "odata/v1/Products('%s')/Nodes('%s.SAFE')/Nodes('MTD_MSIL%s.xml')/$value"
+                self.apiUrl
+                + "odata/v1/Products('%s')/Nodes('%s.SAFE')/Nodes('MTD_MSIL%s.xml')/$value"
                 % (sp["uuid"], sp["title"], productLevel)
             )
             meta_cache_file = self.dataPath + "/products/%s-MTD_MSIL%s.xml" % (
@@ -201,9 +203,7 @@ class Sentinel2Loader:
                 mcontents = loadFile(meta_cache_file)
                 os.system("touch -c %s" % meta_cache_file)
             else:
-                logger.debug(
-                    "Getting metadata info for tile '%s' remotely", sp["uuid"]
-                )
+                logger.debug("Getting metadata info for tile '%s' remotely", sp["uuid"])
                 r = requests.get(url, auth=(self.user, self.password))
                 if r.status_code != 200:
                     raise Exception(
@@ -259,7 +259,8 @@ class Sentinel2Loader:
                     )
                 elif productLevel == "1C":
                     url = (
-                        self.apiUrl + "odata/v1/Products('%s')/Nodes('%s.SAFE')/Nodes('GRANULE')/Nodes('%s')/Nodes('IMG_DATA')/Nodes('%s.jp2')/$value"
+                        self.apiUrl
+                        + "odata/v1/Products('%s')/Nodes('%s.SAFE')/Nodes('GRANULE')/Nodes('%s')/Nodes('IMG_DATA')/Nodes('%s.jp2')/$value"
                         % (sp["uuid"], sp["title"], m.group(1), m.group(2))
                     )
 

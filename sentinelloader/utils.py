@@ -4,8 +4,8 @@ import sys
 
 import requests
 from osgeo import gdal, ogr
-from shapely.geometry import Polygon
 from pyproj import Transformer
+from shapely.geometry import Polygon
 
 logger = logging.getLogger("sentinelloader")
 

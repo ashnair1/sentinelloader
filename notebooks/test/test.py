@@ -1,17 +1,39 @@
 import logging
 import os
-from osgeo import gdal
+
 import matplotlib.pyplot as plt
+from osgeo import gdal
+
 from sentinelloader import Sentinel2Loader
+
 logging.basicConfig(level=logging.DEBUG)
 
-sl = Sentinel2Loader('/notebooks/data/output/sentinelcache', 
-                    os.environ['COPERNICUS_USER'], os.environ['COPERNICUS_PASSWORD'],
-                    apiUrl='https://apihub.copernicus.eu/apihub/', showProgressbars=True)
+
+sl = Sentinel2Loader(
+    "./data/output/sentinelcache",
+    os.environ["COPERNICUS_USER"],
+    os.environ["COPERNICUS_PASSWORD"],
+    apiUrl="https://apihub.copernicus.eu/apihub/",
+    showProgressbars=True,
+)
 
 # area = [(-51.15, -14),(-51.8,-14),(-51.8,-14.25),(-51.15,-14.25),(-51.15,-14)]# area = [(-51.15, -14),(-51.8,-14),(-51.8,-14.25),(-51.15,-14.25),(-51.15,-14)]
-area = [(-47.873796, -16.044801), (-47.933796, -16.044801),
-        (-47.933796, -15.924801), (-47.873796, -15.924801)]
+area = [
+    (-47.873796, -16.044801),
+    (-47.933796, -16.044801),
+    (-47.933796, -15.924801),
+    (-47.873796, -15.924801),
+]
+
+
+area = [
+    (54.28659, 24.33574),
+    (54.57326, 24.33574),
+    (54.57326, 24.59667),
+    (54.28659, 24.59667),
+    (54.28659, 24.33574)
+]
+
 # area = [(-51.15, -14),(-52.1,-14),(-52.1,-14.25),(-51.15,-14.25),(-51.15,-14)]# area = [(-51.15, -14),(-51.8,-14),(-51.8,-14.25),(-51.15,-14.25),(-51.15,-14)]
 # area = [(-44.8, -15),(-46.2,-15),(-46.2,-15.2),(-44.8,-15.2)]# area = [(-51.15, -14),(-51.8,-14),(-51.8,-14.25),(-51.15,-14.25),(-51.15,-14)]
 # area = [(-50.45, -15.25),(-50.65, -15.25),(-50.65, -15.45),(-50.65, -15.45),(-49.5, -16.5)]
@@ -25,7 +47,8 @@ area = [(-47.873796, -16.044801), (-47.933796, -16.044801),
 # os.remove(geoTiff)
 
 geoTiffs = sl.getRegionHistory(
-    area, 'TCI', '60m', '2019-01-06', '2019-01-30', daysStep=5)
+    area, "TCI", "60m", "2021-08-01", "2021-09-01", daysStep=5
+)
 for geoTiff in geoTiffs:
     ds = gdal.Open(geoTiff).ReadAsArray()
     plt.figure(figsize=(5, 5))

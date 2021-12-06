@@ -8,6 +8,9 @@ from sentinelloader import Sentinel2Loader
 
 logging.basicConfig(level=logging.DEBUG)
 
+from dotenv import load_dotenv   #for python-dotenv method
+load_dotenv("/home/ashwin/Desktop/Projects/sentinelloader/.env")   
+
 
 sl = Sentinel2Loader(
     "./data/output/sentinelcache",
